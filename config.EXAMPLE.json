@@ -1,0 +1,10 @@
+{
+    "train": {
+        "out-dir":"train",
+        "tpu-ip":"NaN",
+        "data":"data"
+    },
+    "eval": {
+        "model-dir":"train"
+    }
+}

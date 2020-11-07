@@ -1,0 +1,6 @@
+gin
+jax
+jaxlib
+trax
+matplotlib
+discord.py
