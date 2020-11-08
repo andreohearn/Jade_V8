@@ -63,7 +63,7 @@ elif config_general["mode"] == "translate":
         with io.open(os.path.join(config_general["data"],training_data), mode="r", encoding="utf-8") as f:
             IDS+=[TOKENIZER.Encode(split_value) for split_value in f.read().split("\n")]
 print(IDS[0][-300:])
-print(TOKENIZER.Decode(IDS[0[-300:]]))
+print(TOKENIZER.Decode(IDS[0][-300:]]))
 MAX_DIMENSIONS=len(max(IDS,key=len))
 print(f"{MAX_DIMENSIONS} is the longest array subset")
 print(f"{len(IDS)} training sequences")
