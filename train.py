@@ -25,6 +25,7 @@ output_dir = config_general["out-dir"]
 try:os.makedirs(output_dir)
 except:pass
 
+"""
 if not os.path.exists(os.path.join(config_general['out-dir'], 'bpe.model')):
     spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=config_general["vocab_size"], unk_id=1,bos_id=3, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
 
@@ -35,7 +36,6 @@ print(TOKENIZER.Encode("1234 Hello this is a 😊!!!! .. .\n|dividertoken| oh, t
 print(TOKENIZER.EncodeAsPieces("1234 Hello this is a 😊!!!! .. .\n|dividertoken| oh, that's unfortunate |dividertoken|\nI'm so |br| flabbergasted!  |dividertoken| oop".replace("\n"," ")))
 
 def chunks(lst, n):
-    """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
 
@@ -74,7 +74,7 @@ print("These samples will not be included.")
 # Set up the data pipeline:
 # What this does is take the big list of list question/answer tokenized arrays and concatanate the data split into fittable sizes
 # These are looped through, in order, to generate next outputs with context.
-"""
+
 def gen_inputs(n_devices):
     while True:
         inputs = []
