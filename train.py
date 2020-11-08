@@ -53,10 +53,6 @@ if config_general["mode"] == "conversation":
     for sequence in IDS:
         DE_SPLIT.append([j for i in sequence for j in i])
     IDS=DE_SPLIT
-    print(IDS[0][-100:])
-    MAX_DIMENSIONS=len(max(IDS,key=len))
-    print(f"{MAX_DIMENSIONS} is the longest array subset")
-    print(f"{len(IDS)} training sequences")
 elif config_general["mode"] == "translate":
     for training_data in os.listdir(config_general["data"]):
         IDS=[]
