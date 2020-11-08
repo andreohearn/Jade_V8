@@ -105,6 +105,7 @@ print("(device count, tokens per device) = ",
 current_sample=10
 
 # Configure hyperparameters.
+print(f"Using {config_general['mode']} params")
 if config_general["mode"] == "conversation":
     hyperparams=open("src/hyperparameters.py","r").read()
 elif config_general["mode"] == "translate":
