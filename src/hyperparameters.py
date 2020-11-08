@@ -9,7 +9,7 @@ import trax.supervised.trainer_lib
 train.model = @trax.models.ReformerLM
 # Our model will have 6 layers, alternating between the LSH attention proposed
 # in the Reformer paper and local attention within a certain context window.
-n_layers = 6
+n_layers = 12
 attn_type = [
   @trax.layers.SelfAttention,
   @LSHSelfAttention,  
@@ -19,17 +19,17 @@ attn_type = [
   @LSHSelfAttention,
   ]
 share_qk = False  # LSH attention ignores this flag and always shares q & k
-n_heads = 6
+n_heads = 12
 attn_kv = 64
-dropout = 0.2
-n_tokens = 32768
+dropout = 0.1
+n_tokens = 16384
 
 # Parameters for multifactor:
 # ==============================================================================
-multifactor.constant = 0.03125
+multifactor.constant = 0.01
 multifactor.factors = 'constant * linear_warmup * cosine_decay'
-multifactor.warmup_steps = 50000
-multifactor.steps_per_cycle = 200000
+multifactor.warmup_steps = 8000
+multifactor.steps_per_cycle = 100000
 
 # Parameters for Adam:
 # ==============================================================================
@@ -40,19 +40,19 @@ Adam.eps = 1e-9
 
 # Parameters for SelfAttention:
 # ==============================================================================
-trax.layers.SelfAttention.attention_dropout = 0.2
+trax.layers.SelfAttention.attention_dropout = 0.1
 trax.layers.SelfAttention.chunk_len = 64
 trax.layers.SelfAttention.n_chunks_before = 1
 trax.layers.SelfAttention.n_parallel_heads = 1
 
 # Parameters for LSHSelfAttention:
 # ==============================================================================
-LSHSelfAttention.attention_dropout = 0.2
+LSHSelfAttention.attention_dropout = 0.0
 LSHSelfAttention.chunk_len = 64
 LSHSelfAttention.n_buckets = [64, 128]
 LSHSelfAttention.n_chunks_after = 0
 LSHSelfAttention.n_chunks_before = 1
-LSHSelfAttention.n_hashes = 4
+LSHSelfAttention.n_hashes = 2
 LSHSelfAttention.n_parallel_heads = 1
 LSHSelfAttention.predict_drop_len = 128
 LSHSelfAttention.predict_mem_len = 1024
@@ -70,6 +70,6 @@ ReformerLM.max_len = %n_tokens
 ReformerLM.mode = 'train'
 ReformerLM.n_heads = %n_heads
 ReformerLM.n_layers = %n_layers
-ReformerLM.vocab_size = 500
-ReformerLM.axial_pos_shape = (128, 256)
+ReformerLM.vocab_size = 1000
+ReformerLM.axial_pos_shape = (128,128)
 ReformerLM.d_axial_pos_embs= (128, 384)

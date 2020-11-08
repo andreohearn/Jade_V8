@@ -22,7 +22,7 @@ TOKENIZER = spm.SentencePieceProcessor()
 TOKENIZER.Load(os.path.join(config_general["eval"]["model-dir"],"bpe.model"))
 
 def generate(inp):
-    input_encoded=np.asarray([[2] + TOKENIZER.Encode(inp) + [1]])
+    input_encoded=np.asarray([[2] + TOKENIZER.Encode(inp) + [2]])
     # Sample from ReformerLM
     output_token_ids = trax.supervised.decoding.autoregressive_sample_stream(model, input_encoded, temperature=0.9, accelerate=True)
     result, start = [], time.time()

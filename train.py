@@ -26,7 +26,7 @@ try:os.makedirs(output_dir)
 except:pass
 
 if not os.path.exists(os.path.join(config_general['out-dir'], 'bpe.model')):
-    spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=33300, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
+    spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=1000, unk_id=1,bos_id=3, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
 
 TOKENIZER = spm.SentencePieceProcessor()
 TOKENIZER.Load(os.path.join(config_general['out-dir'], 'bpe.model'))
@@ -46,13 +46,13 @@ for training_data in os.listdir(config_general["data"]):
     with io.open(os.path.join(config_general["data"],training_data), mode="r", encoding="utf-8") as f:
         IDS+=" ".join([str(token) for token in TOKENIZER.Encode(f.read().strip().replace("\n"," "))]).split(f' {2} ')
 IDS=[[int(toint) for toint in token.split(" ")]+[2] for token in IDS]
-n=400
+n=450
 IDS=[IDS[i * n:(i + 1) * n] for i in range((len(IDS) + n - 1) // n )]
 DE_SPLIT=[]
 for sequence in IDS:
     DE_SPLIT.append([j for i in sequence for j in i])
 IDS=DE_SPLIT
-print(IDS[0]==IDS[1])
+print(IDS[0][-100:])
 MAX_DIMENSIONS=len(max(IDS,key=len))
 print(f"{MAX_DIMENSIONS} is the longest array subset")
 print(f"{len(IDS)} training sequences")
@@ -60,8 +60,8 @@ print(f"{len(IDS)} training sequences")
 #a test check to see how many of our samples are forcefully removed due to being too long
 for SELECT in range(0,len(IDS)):
     CONTEXT_IDS=IDS[SELECT]
-    if (128*256)- len(CONTEXT_IDS) <= 0:
-        print(f"Index {SELECT} is out of bounds by {(128*256)- len(CONTEXT_IDS)}")
+    if (128*128)- len(CONTEXT_IDS) <= 0:
+        print(f"Index {SELECT} is out of bounds by {(128*128)- len(CONTEXT_IDS)}")
 print("These samples will not be included.")
 
 # Set up the data pipeline:
@@ -76,8 +76,8 @@ def gen_inputs(n_devices):
             PAD_AMOUNT=0
             while PAD_AMOUNT <= 0:
                 current_sample = np.random.choice(len(IDS)-1, 1)[0]
-                SELECT=IDS[current_sample]
-                PAD_AMOUNT = (128*256) - len(SELECT)
+                SELECT=[2]+IDS[current_sample]
+                PAD_AMOUNT = (128*128) - len(SELECT)
             SELECT=np.asarray(SELECT, dtype=np.int32)
             pad_amount = np.random.choice(PAD_AMOUNT, 1)[0]
             inputs.append(np.pad(SELECT, (pad_amount, PAD_AMOUNT - pad_amount),
@@ -115,6 +115,6 @@ print("DONE, BEGIN TRAINING")
 # The first time trainer.train_epoch is called, it will JIT the entire network
 # architecture, which takes around 2 minutes. The JIT-compiled model is saved
 # so subsequent runs will be much faster than the first.
-for i in range(1000):
+for i in range(550):
     print(f'Epoch {i} starting')
     trainer.train_epoch(n_steps=200, n_eval_steps=1)

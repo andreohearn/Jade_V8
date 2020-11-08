@@ -1,7 +1,7 @@
 # JadeV8 - Training and Finetuning a Reformer Model
 
 ## Overview
-The reformer model is a significant improvement over the transformer model in terms of speed, memory consumption, and storage usage. It enables massive context windows (transformer models such as GPT-2 only have context windows of 1024 tokens). This reformer model attempts to handle context windows of 33k tokens, with the goal of increasing the model's ability to handle long-term contexts in conversations.
+The reformer model is a significant improvement over the transformer model in terms of speed, memory consumption, and storage usage. It enables massive context windows (transformer models such as GPT-2 only have context windows of 1024 tokens). This reformer model attempts to handle context windows of 16k tokens, with the goal of increasing the model's ability to handle long-term contexts in conversations.
 
 The hope is that these improvements are worthwhile to retrain an entirely new model for others to finetune.
 
@@ -14,7 +14,7 @@ This repo is based on the example code that Google provided in their github repo
 - Instead of using a pretrained 310-token pretrained tokenizer, this repo trains its own 500-token tokenizer on the input text
 - The context window is reduced from 500k to 32k to improve memory efficiency (you don't need such a massive context window for conversations)
 - Instead of storing a copy of the text in each of the TPU cores with different padding, the text is automatically divided into feedable chunks and each TPU core receives a different sample from the chunks (still padded randomly)
-- Dropout is increased from 0.05 to 0.2 (this is acceptable because with the size of the input dataset, the TPUs may be dealing with 2k different 33k token samples)
+- Dropout is increased from 0.05 to 0.2 (this is acceptable because with the size of the input dataset, the TPUs may be dealing with 2k different 13k token samples)
 
 ## Training
 The majority of the model's hyperparameters are already set for you (and have been maxed out for GCP's 3-8 TPUs), but if you would like to modify it, it is in src/hyperparameters.py - put a issue request if you'd like me to explain what each parameter means.
@@ -22,26 +22,25 @@ The majority of the model's hyperparameters are already set for you (and have be
 ### Creating and formatting data
 The data format is simple:
 ```
-Good morning! 
-|aigenerationstart| Good morning! |endofgeneration|
-How are you doing? 
-|aigenerationstart| Doing good, thank you. |endofgeneration|
-What is your last name? 
-|aigenerationstart| As a robot, I don't have a family name. |br| Good afternoon! |endofgeneration|
+|dividertoken| Good morning! 
+|dividertoken| Good morning!
+|dividertoken| How are you doing? 
+|dividertoken| Doing good, thank you. 
+|dividertoken| What is your last name? 
+|dividertoken| As a robot, I don't have a family name. |br| What about you?
 ```
 The rules are as follows:
 - Each line is in its own row
 - Line breaks for users (if a user sends two messages individually after one another, or sends a multiline text) should be differentiated with `|br|`
-- Anything the AI generates should start with `|aigenerationstart|` and and with `|endofgeneration|` (these are editable on [line 28 of train.py](https://github.com/JEF1056/Jade_V8/blob/c1a65390c5439d311bf6d51750bade928327934f/train.py#L29))
-- Avoid any really long repeating character(s), such as `HIIIIIIIIIIIIIIIIII`, `wow!!!!!!!!!!!`, etc. as they can cause the AI to get stuck anytime it sees those characters
-- The last line should always end with `|endofgeneration|`, e.g. should always end with the AI talking
+- Anything the AI generates should start with `|dividertoken|` (this is editable on [line 28 of train.py](https://github.com/JEF1056/Jade_V8/blob/c1a65390c5439d311bf6d51750bade928327934f/train.py#L29))
+- Avoid any really long repeating character(s), such as `HIIIIIIIIIIIIIIIIII`, `wow!!!!!!!!!!!`, etc. as they can cause the AI to get stuck anytime it sees those characters.
 
 > You may completely ignore these rules if you intend on using this repo for a different purpose, like generating long pieces of text. Just note that `evaluate.py` will no longer work as intended.
 
 When complete, you may put the text in a folder (to support more than one text as input data)
 
 The pretrained models were trained using these datasets:
-- [Cornell Movie Dialogues]()
+- [Cornell Movie Dialogues](https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html)
 - [Anime Subtitles](https://www.kaggle.com/jef1056/anime-subtitles)
 - [Google Datasets' Taskmaster](https://github.com/google-research-datasets/Taskmaster)
 - [Google Datasets' Coached Conversational Preference Elicitation](https://research.google/tools/datasets/coached-conversational-preference-elicitation/)
