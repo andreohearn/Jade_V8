@@ -71,7 +71,7 @@ print(f"{len(IDS)} training sequences")
 for SELECT in range(0,len(IDS)):
     CONTEXT_IDS=IDS[SELECT]
     if (config_general["size"])- len(CONTEXT_IDS) <= 0:
-        print(f"Index {SELECT} is out of bounds by {(config_general["size"])- len(CONTEXT_IDS)}")
+        print(f"Index {SELECT} is out of bounds by {(config_general['size'])- len(CONTEXT_IDS)}")
 print("These samples will not be included.")
 
 # Set up the data pipeline:
