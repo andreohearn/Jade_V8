@@ -12,10 +12,6 @@ train.model = @trax.models.ReformerLM
 n_layers = 6
 attn_type = [
   @trax.layers.SelfAttention,
-  @LSHSelfAttention,  
-  @trax.layers.SelfAttention,
-  @LSHSelfAttention,
-  @trax.layers.SelfAttention,
   @LSHSelfAttention,
   ]
 share_qk = False  # LSH attention ignores this flag and always shares q & k
@@ -63,7 +59,7 @@ ReformerLM.attention_type = %attn_type
 ReformerLM.d_attention_key = %attn_kv
 ReformerLM.d_attention_value = %attn_kv
 ReformerLM.d_model = 512
-ReformerLM.d_ff = 1024
+ReformerLM.d_ff = 2048
 ReformerLM.dropout = %dropout
 ReformerLM.ff_activation = @trax.layers.Relu
 ReformerLM.max_len = %n_tokens
