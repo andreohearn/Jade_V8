@@ -59,8 +59,9 @@ if config_general["mode"] == "conversation":
     print(f"{len(IDS)} training sequences")
 elif config_general["mode"] == "translate":
     for training_data in os.listdir(config_general["data"]):
+        IDS=[]
         with io.open(os.path.join(config_general["data"],training_data), mode="r", encoding="utf-8") as f:
-            IDS=[TOKENIZER.Encode(split_value) for split_value in f.read().split("\n")]
+            IDS+=[TOKENIZER.Encode(split_value) for split_value in f.read().split("\n")]
 print(IDS[0][-100:])
 MAX_DIMENSIONS=len(max(IDS,key=len))
 print(f"{MAX_DIMENSIONS} is the longest array subset")
