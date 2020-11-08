@@ -26,7 +26,7 @@ try:os.makedirs(output_dir)
 except:pass
 
 if not os.path.exists(os.path.join(config_general['out-dir'], 'bpe.model')):
-    spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=1000, unk_id=1,bos_id=3, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
+    spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=config_general["vocab_size"], unk_id=1,bos_id=3, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
 
 TOKENIZER = spm.SentencePieceProcessor()
 TOKENIZER.Load(os.path.join(config_general['out-dir'], 'bpe.model'))
@@ -70,8 +70,8 @@ print(f"{len(IDS)} training sequences")
 #a test check to see how many of our samples are forcefully removed due to being too long
 for SELECT in range(0,len(IDS)):
     CONTEXT_IDS=IDS[SELECT]
-    if (128*128)- len(CONTEXT_IDS) <= 0:
-        print(f"Index {SELECT} is out of bounds by {(128*128)- len(CONTEXT_IDS)}")
+    if (config_general["size"])- len(CONTEXT_IDS) <= 0:
+        print(f"Index {SELECT} is out of bounds by {(config_general["size"])- len(CONTEXT_IDS)}")
 print("These samples will not be included.")
 
 # Set up the data pipeline:
@@ -87,7 +87,7 @@ def gen_inputs(n_devices):
             while PAD_AMOUNT <= 0:
                 current_sample = np.random.choice(len(IDS)-1, 1)[0]
                 SELECT=[2]+IDS[current_sample]
-                PAD_AMOUNT = (128*128) - len(SELECT)
+                PAD_AMOUNT = (config_general["size"]) - len(SELECT)
             SELECT=np.asarray(SELECT, dtype=np.int32)
             pad_amount = np.random.choice(PAD_AMOUNT, 1)[0]
             inputs.append(np.pad(SELECT, (pad_amount, PAD_AMOUNT - pad_amount),
