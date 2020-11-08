@@ -24,7 +24,7 @@ TOKENIZER.Load(os.path.join(config_general["eval"]["model-dir"],"bpe.model"))
 def generate(inp):
     input_encoded=np.asarray([[2] + TOKENIZER.Encode(inp) + [2]])
     # Sample from ReformerLM
-    output_token_ids = trax.supervised.decoding.autoregressive_sample_stream(model, input_encoded, temperature=0.9, accelerate=True)
+    output_token_ids = trax.supervised.decoding.autoregressive_sample_stream(model, input_encoded, temperature=0.0, accelerate=True)
     result, start = [], time.time()
     while True:
         result.append(next(output_token_ids).tolist()[0])
