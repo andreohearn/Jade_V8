@@ -105,7 +105,10 @@ print("(device count, tokens per device) = ",
 current_sample=10
 
 # Configure hyperparameters.
-hyperparams=open("src/hyperparameters.py","r").read()
+if config_general["mode"] == "conversation":
+    hyperparams=open("src/hyperparameters.py","r").read()
+elif config_general["mode"] == "translate":
+    hyperparams=open("src/hyperparameters-translate.py","r").read()
 gin.parse_config(hyperparams)
 with open(os.path.join(output_dir,"hyperparameters.py"), "w") as f:
     f.write(hyperparams)

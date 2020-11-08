@@ -28,8 +28,8 @@ n_tokens = 16384
 # ==============================================================================
 multifactor.constant = 0.01
 multifactor.factors = 'constant * linear_warmup * cosine_decay'
-multifactor.warmup_steps = 8000
-multifactor.steps_per_cycle = 100000
+multifactor.warmup_steps = 4000
+multifactor.steps_per_cycle = 50000
 
 # Parameters for Adam:
 # ==============================================================================
