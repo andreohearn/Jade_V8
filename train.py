@@ -88,7 +88,6 @@ def gen_inputs(n_devices):
             while PAD_AMOUNT <= 0:
                 current_sample = np.random.choice(len(IDS)-1, 1)[0]
                 SELECT=[2]+IDS[current_sample]
-                print(SELECT)
                 PAD_AMOUNT = (config_general["size"]) - len(SELECT)
             SELECT=np.asarray(SELECT, dtype=np.int32)
             pad_amount = np.random.choice(PAD_AMOUNT, 1)[0]
