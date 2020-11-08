@@ -98,7 +98,7 @@ def gen_inputs(n_devices):
         yield (inputs, inputs, mask)
 """
 
-def gen_inputs(batch_size, length=254):
+def gen_inputs(batch_size, length=256):
   while True:
     random_ints = m = np.random.randint(1, 31, (batch_size,length))
     source = random_ints
