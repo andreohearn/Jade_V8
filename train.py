@@ -62,7 +62,8 @@ elif config_general["mode"] == "translate":
         IDS=[]
         with io.open(os.path.join(config_general["data"],training_data), mode="r", encoding="utf-8") as f:
             IDS+=[TOKENIZER.Encode(split_value) for split_value in f.read().split("\n")]
-print(IDS[0][-100:])
+print(IDS[0][-300:])
+print(TOKENIZER.Decode(IDS[0[-300:]]))
 MAX_DIMENSIONS=len(max(IDS,key=len))
 print(f"{MAX_DIMENSIONS} is the longest array subset")
 print(f"{len(IDS)} training sequences")
@@ -87,6 +88,7 @@ def gen_inputs(n_devices):
             while PAD_AMOUNT <= 0:
                 current_sample = np.random.choice(len(IDS)-1, 1)[0]
                 SELECT=[2]+IDS[current_sample]
+                print(SELECT)
                 PAD_AMOUNT = (config_general["size"]) - len(SELECT)
             SELECT=np.asarray(SELECT, dtype=np.int32)
             pad_amount = np.random.choice(PAD_AMOUNT, 1)[0]
@@ -101,8 +103,7 @@ def gen_inputs(n_devices):
 
 #test it's working on sample index 10
 print("(device count, tokens per device) = ",
-      next(gen_inputs(trax.fastmath.device_count()))[0].shape)
-current_sample=10
+    next(gen_inputs(trax.fastmath.device_count()))[0].shape)
 
 # Configure hyperparameters.
 print(f"Using {config_general['mode']} params")
