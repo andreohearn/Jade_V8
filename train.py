@@ -41,17 +41,26 @@ def chunks(lst, n):
 
 # Tokenize
 print("\nBEGIN SAMPLING")
-IDS=[]
-for training_data in os.listdir(config_general["data"]):
-    with io.open(os.path.join(config_general["data"],training_data), mode="r", encoding="utf-8") as f:
-        IDS+=" ".join([str(token) for token in TOKENIZER.Encode(f.read().strip().replace("\n"," "))]).split(f' {2} ')
-IDS=[[int(toint) for toint in token.split(" ")]+[2] for token in IDS]
-n=450
-IDS=[IDS[i * n:(i + 1) * n] for i in range((len(IDS) + n - 1) // n )]
-DE_SPLIT=[]
-for sequence in IDS:
-    DE_SPLIT.append([j for i in sequence for j in i])
-IDS=DE_SPLIT
+if config_general["mode"] == "conversation":
+    IDS=[]
+    for training_data in os.listdir(config_general["data"]):
+        with io.open(os.path.join(config_general["data"],training_data), mode="r", encoding="utf-8") as f:
+            IDS+=" ".join([str(token) for token in TOKENIZER.Encode(f.read().strip().replace("\n"," "))]).split(f' {2} ')
+    IDS=[[int(toint) for toint in token.split(" ")]+[2] for token in IDS]
+    n=450
+    IDS=[IDS[i * n:(i + 1) * n] for i in range((len(IDS) + n - 1) // n )]
+    DE_SPLIT=[]
+    for sequence in IDS:
+        DE_SPLIT.append([j for i in sequence for j in i])
+    IDS=DE_SPLIT
+    print(IDS[0][-100:])
+    MAX_DIMENSIONS=len(max(IDS,key=len))
+    print(f"{MAX_DIMENSIONS} is the longest array subset")
+    print(f"{len(IDS)} training sequences")
+elif config_general["mode"] == "translate":
+    for training_data in os.listdir(config_general["data"]):
+        with io.open(os.path.join(config_general["data"],training_data), mode="r", encoding="utf-8") as f:
+            IDS=[TOKENIZER.Encode(split_value) for split_value in f.read().split("\n")]
 print(IDS[0][-100:])
 MAX_DIMENSIONS=len(max(IDS,key=len))
 print(f"{MAX_DIMENSIONS} is the longest array subset")

@@ -11,8 +11,8 @@ The reformer model does not come without its downsides. With the current release
 - There is no way to effectively synchronously run the model on multiple TPUs at once to speed up training in fewer steps. (seems to be an [issue with JAX](https://github.com/google/jax/issues/3004), no idea when it'll be fixed)
 
 This repo is based on the example code that Google provided in their github repo for text generation, but with a few key differences:
-- Instead of using a pretrained 310-token pretrained tokenizer, this repo trains its own 500-token tokenizer on the input text
-- The context window is reduced from 500k to 32k to improve memory efficiency (you don't need such a massive context window for conversations)
+- Instead of using a pretrained 310-token pretrained tokenizer, this repo trains its own 1000-token tokenizer on the input text
+- The context window is reduced from 500k to 16k to improve memory efficiency (you don't need such a massive context window for conversations)
 - Instead of storing a copy of the text in each of the TPU cores with different padding, the text is automatically divided into feedable chunks and each TPU core receives a different sample from the chunks (still padded randomly)
 - Dropout is increased from 0.05 to 0.2 (this is acceptable because with the size of the input dataset, the TPUs may be dealing with 2k different 13k token samples)
 
