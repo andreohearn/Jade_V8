@@ -9,7 +9,7 @@ import trax.supervised.trainer_lib
 train.model = @trax.models.ReformerLM
 # Our model will have 6 layers, alternating between the LSH attention proposed
 # in the Reformer paper and local attention within a certain context window.
-n_layers = 12
+n_layers = 6
 attn_type = [
   @trax.layers.SelfAttention,
   @LSHSelfAttention,  
@@ -19,7 +19,7 @@ attn_type = [
   @LSHSelfAttention,
   ]
 share_qk = False  # LSH attention ignores this flag and always shares q & k
-n_heads = 8
+n_heads = 6
 attn_kv = 64
 dropout = 0.1
 n_tokens = 512
