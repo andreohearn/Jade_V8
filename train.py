@@ -128,6 +128,6 @@ print("DONE, BEGIN TRAINING")
 # The first time trainer.train_epoch is called, it will JIT the entire network
 # architecture, which takes around 2 minutes. The JIT-compiled model is saved
 # so subsequent runs will be much faster than the first.
-for i in range(550):
+for i in range(config_general["epochs"]):
     print(f'Epoch {i} starting')
-    trainer.train_epoch(n_steps=200, n_eval_steps=1)
+    trainer.train_epoch(n_steps=config_general["steps"], n_eval_steps=1)
