@@ -19,7 +19,7 @@ attn_type = [
   @LSHSelfAttention,
   ]
 share_qk = False  # LSH attention ignores this flag and always shares q & k
-n_heads = 12
+n_heads = 8
 attn_kv = 64
 dropout = 0.1
 n_tokens = 512
@@ -63,7 +63,7 @@ ReformerLM.attention_type = %attn_type
 ReformerLM.d_attention_key = %attn_kv
 ReformerLM.d_attention_value = %attn_kv
 ReformerLM.d_model = 512
-ReformerLM.d_ff = 1024
+ReformerLM.d_ff = 2048
 ReformerLM.dropout = %dropout
 ReformerLM.ff_activation = @trax.layers.Relu
 ReformerLM.max_len = %n_tokens
