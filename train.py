@@ -74,6 +74,7 @@ print("These samples will not be included.")
 # Set up the data pipeline:
 # What this does is take the big list of list question/answer tokenized arrays and concatanate the data split into fittable sizes
 # These are looped through, in order, to generate next outputs with context.
+"""
 def gen_inputs(n_devices):
     while True:
         inputs = []
@@ -95,6 +96,21 @@ def gen_inputs(n_devices):
         inputs = np.stack(inputs)
         mask = np.stack(mask)
         yield (inputs, inputs, mask)
+"""
+
+def gen_inputs(batch_size, length=1024):
+  while True:
+    random_ints = m = np.random.randint(1, 31, (batch_size,length))
+    source = random_ints
+
+    target = np.flip(source, 1)
+
+    zero = np.zeros([batch_size, 1], np.int32)
+    x = np.concatenate([zero, source, zero, target], axis=1)
+
+    loss_weights = np.concatenate([np.zeros((batch_size, length+2)),
+                                    np.ones((batch_size, length))], axis=1)
+    yield (x, x, loss_weights)  # Here inputs and targets are the same.
 
 #test it's working on sample index 10
 print("(device count, tokens per device) = ",
