@@ -41,6 +41,6 @@ Reformer.mode = 'train'
 Reformer.n_decoder_layers = 6
 Reformer.n_encoder_layers = 6
 Reformer.n_heads = 8
-Reformer.vocab_size = 30
+Reformer.input_vocab_size = 30
 Reformer.axial_pos_shape = (16,32)
 Reformer.d_axial_pos_embs= (128, 384)
