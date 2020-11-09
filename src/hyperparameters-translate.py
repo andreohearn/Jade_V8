@@ -32,5 +32,5 @@ ReformerLM.ff_activation = @trax.layers.Relu
 ReformerLM.max_len = 512
 ReformerLM.mode = 'train'
 ReformerLM.n_layers = 2
+ReformerLM.n_heads = 1
 ReformerLM.vocab_size = 32
-ReformerLM.axial_pos_shape = (128,128)
