@@ -22,7 +22,7 @@ share_qk = False  # LSH attention ignores this flag and always shares q & k
 n_heads = 6
 attn_kv = 64
 dropout = 0.1
-n_tokens = 512
+n_tokens = 256
 
 # Parameters for multifactor:
 # ==============================================================================
@@ -35,7 +35,7 @@ multifactor.warmup_steps = 8000
 
 # Parameters for Adam:
 # ==============================================================================
-Adam.weight_decay_rate=1e-05
+Adam.weight_decay_rate=0.0
 Adam.b1 = 0.86
 Adam.b2 = 0.92
 Adam.eps = 1e-9
@@ -73,5 +73,5 @@ ReformerLM.mode = 'train'
 ReformerLM.n_heads = %n_heads
 ReformerLM.n_layers = %n_layers
 ReformerLM.vocab_size = 200
-ReformerLM.axial_pos_shape = (16,32)
+ReformerLM.axial_pos_shape = (16,16)
 ReformerLM.d_axial_pos_embs= (128, 384)
