@@ -33,4 +33,4 @@ ReformerLM.max_len = 512
 ReformerLM.mode = 'train'
 ReformerLM.n_layers = 6
 ReformerLM.n_heads = 4
-ReformerLM.input_vocab_size = 32
+ReformerLM.vocab_size = 32
