@@ -26,7 +26,7 @@ try:os.makedirs(output_dir)
 except:pass
 
 if not os.path.exists(os.path.join(config_general['out-dir'], 'bpe.model')):
-    spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=config_general["vocab_size"], unk_id=1,bos_id=3, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
+    spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=config_general["vocab_size"], pad_id=0, unk_id=1,bos_id=3, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
 
 TOKENIZER = spm.SentencePieceProcessor()
 TOKENIZER.Load(os.path.join(config_general['out-dir'], 'bpe.model'))
@@ -88,7 +88,7 @@ def gen_inputs(n_devices):
             IN,OUT=" ".join([str(value) for value in SELECT]).split(" 2 ")
             SELECT=np.concatenate([np.asarray([2],dtype=np.int32), np.asarray(IN.split(" "), dtype=np.int32), np.asarray([2],dtype=np.int32) ,np.asarray(OUT.split(" "), dtype=np.int32), np.zeros(PAD_AMOUNT-1)])
             inputs.append(SELECT)
-            mask.append(np.concatenate([np.zeros(len(IN)+2), np.ones(len(OUT))]))
+            mask.append(np.concatenate([np.zeros(len(IN)+2), np.ones(len(OUT)), np.zeros(PAD_AMOUNT-1)]))
         print(inputs)
         print(mask)
         inputs = np.stack(inputs)
