@@ -70,6 +70,6 @@ ReformerLM.max_len = %n_tokens
 ReformerLM.mode = 'train'
 ReformerLM.n_heads = %n_heads
 ReformerLM.n_layers = %n_layers
-ReformerLM.vocab_size = 1000
+ReformerLM.vocab_size = 20000
 ReformerLM.axial_pos_shape = (16,16)
 ReformerLM.d_axial_pos_embs= (128, 384)
