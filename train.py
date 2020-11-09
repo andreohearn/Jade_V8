@@ -128,13 +128,22 @@ with open(os.path.join(output_dir,"hyperparameters.py"), "w") as f:
 
 # Set up a Trainer.
 print("SETTING UP TRAINER/MODEL (depending on your layer sizes this might take a while)")
-trainer = trax.supervised.Trainer(
-    model=trax.models.ReformerLM,
-    loss_fn=trax.layers.CrossEntropyLoss(),
-    optimizer=trax.optimizers.Adam,
-    lr_schedule=trax.lr.multifactor(),
-    inputs=trax.data.inputs.Inputs(gen_inputs),
-    output_dir=output_dir)
+if config_general["mode"] == "conversation":
+    trainer = trax.supervised.Trainer(
+        model=trax.models.ReformerLM,
+        loss_fn=trax.layers.CrossEntropyLoss(),
+        optimizer=trax.optimizers.Adam,
+        lr_schedule=trax.lr.multifactor(),
+        inputs=trax.data.inputs.Inputs(gen_inputs),
+        output_dir=output_dir)
+elif config_general["mode"] == "translate":
+    trainer = trax.supervised.Trainer(
+        model=trax.models.Reformer,
+        loss_fn=trax.layers.CrossEntropyLoss(),
+        optimizer=trax.optimizers.Adam,
+        lr_schedule=trax.lr.multifactor(),
+        inputs=trax.data.inputs.Inputs(gen_inputs),
+        output_dir=output_dir)
 print("DONE, BEGIN TRAINING")
 
 # Run one training step, to make sure the model fits in memory.
