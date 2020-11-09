@@ -25,7 +25,6 @@ output_dir = config_general["out-dir"]
 try:os.makedirs(output_dir)
 except:pass
 
-"""
 if not os.path.exists(os.path.join(config_general['out-dir'], 'bpe.model')):
     spm.SentencePieceTrainer.Train(input=[os.path.join(config_general["data"],filename) for filename in os.listdir(config_general["data"])], model_prefix=os.path.join(config_general['out-dir'], 'bpe'), model_type='bpe', vocab_size=config_general["vocab_size"], unk_id=1,bos_id=3, eos_piece="|dividertoken|", user_defined_symbols=["|dividertoken|", "|br|"])
 
@@ -84,33 +83,17 @@ def gen_inputs(n_devices):
             PAD_AMOUNT=0
             while PAD_AMOUNT <= 0:
                 current_sample = np.random.choice(len(IDS)-1, 1)[0]
-                SELECT=[2]+IDS[current_sample]
+                SELECT=IDS[current_sample]
                 PAD_AMOUNT = (config_general["size"]) - len(SELECT)
-            SELECT=np.asarray(SELECT, dtype=np.int32)
-            pad_amount = np.random.choice(PAD_AMOUNT, 1)[0]
-            inputs.append(np.pad(SELECT, (pad_amount, PAD_AMOUNT - pad_amount),
-                                    mode='constant'))
-            mask.append(np.pad(np.ones_like(SELECT, dtype=np.float32),
-                                (pad_amount, PAD_AMOUNT - pad_amount),
-                                mode='constant'))
+            IN,OUT=" ".join(SELECT).split(" 2 ")
+            SELECT=np.concatenate([np.asarray([2],dtype=np.int32), np.asarray(IN.split(" "), dtype=np.int32), np.asarray([2],dtype=np.int32) ,np.asarray(OUT.split(" "), dtype=np.int32), np.zeros(PAD_AMOUNT-1))], axis=1)
+            inputs.append(SELECT)
+            mask.append(np.concatenate([np.zeros(len(IN)+2), np.ones(len(OUT))], axis=1))
         inputs = np.stack(inputs)
         mask = np.stack(mask)
+        print(inputs)
+        print(mask)
         yield (inputs, inputs, mask)
-"""
-
-def gen_inputs(batch_size, length=255):
-  while True:
-    random_ints = m = np.random.randint(1, 31, (batch_size,length))
-    source = random_ints
-
-    target = np.flip(source, 1)
-
-    zero = np.zeros([batch_size, 1], np.int32)
-    x = np.concatenate([zero, source, zero, target], axis=1)
-
-    loss_weights = np.concatenate([np.zeros((batch_size, length+2)),
-                                    np.ones((batch_size, length))], axis=1)
-    yield (x, x, loss_weights)  # Here inputs and targets are the same.
 
 #test it's working on sample index 10
 print("(device count, tokens per device) = ",
