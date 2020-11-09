@@ -6,7 +6,7 @@ import trax.supervised.trainer_lib
 
 # Parameters that will vary between experiments:
 # ==============================================================================
-train.model = @trax.models.ReformerLM
+train.model = @trax.models.Reformer
 # Parameters for multifactor:
 # ==============================================================================
 multifactor.constant = 0.088
