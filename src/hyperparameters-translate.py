@@ -26,7 +26,7 @@ n_tokens = 256
 
 # Parameters for multifactor:
 # ==============================================================================
-multifactor.constant = 0.088
+multifactor.constant = 0.025
 multifactor.factors = 'constant * linear_warmup * rsqrt_decay'
 multifactor.steps_per_cycle = 100000
 multifactor.warmup_steps = 8000
