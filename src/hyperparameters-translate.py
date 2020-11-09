@@ -34,4 +34,3 @@ ReformerLM.mode = 'train'
 ReformerLM.n_layers = 2
 ReformerLM.vocab_size = 32
 ReformerLM.axial_pos_shape = (128,128)
-ReformerLM.d_axial_pos_embs= (128, 384)
