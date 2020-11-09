@@ -25,12 +25,13 @@ Adam.weight_decay_rate = 1e-05
 
 # Parameters for ReformerLM:
 # ==============================================================================
-ReformerLM.d_model = 512
-ReformerLM.d_ff = 2048
+ReformerLM.d_model = 32
+ReformerLM.d_ff = 128
 ReformerLM.dropout = 0.1
 ReformerLM.ff_activation = @trax.layers.Relu
 ReformerLM.max_len = 512
 ReformerLM.mode = 'train'
-ReformerLM.n_layers = 6
-ReformerLM.n_heads = 4
+ReformerLM.n_layers = 2
 ReformerLM.vocab_size = 32
+ReformerLM.axial_pos_shape = (128,128)
+ReformerLM.d_axial_pos_embs= (128, 384)
