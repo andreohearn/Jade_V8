@@ -86,9 +86,9 @@ def gen_inputs(n_devices):
                 SELECT=IDS[current_sample]
                 PAD_AMOUNT = (config_general["size"]) - len(SELECT)
             IN,OUT=" ".join(SELECT).split(" 2 ")
-            SELECT=np.concatenate([np.asarray([2],dtype=np.int32), np.asarray(IN.split(" "), dtype=np.int32), np.asarray([2],dtype=np.int32) ,np.asarray(OUT.split(" "), dtype=np.int32), np.zeros(PAD_AMOUNT-1)]), axis=1)
+            SELECT=np.concatenate([np.asarray([2],dtype=np.int32), np.asarray(IN.split(" "), dtype=np.int32), np.asarray([2],dtype=np.int32) ,np.asarray(OUT.split(" "), dtype=np.int32), np.zeros(PAD_AMOUNT-1)])
             inputs.append(SELECT)
-            mask.append(np.concatenate([np.zeros(len(IN)+2), np.ones(len(OUT))], axis=1))
+            mask.append(np.concatenate([np.zeros(len(IN)+2), np.ones(len(OUT))]))
         inputs = np.stack(inputs)
         mask = np.stack(mask)
         print(inputs)
