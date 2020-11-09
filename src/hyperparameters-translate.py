@@ -6,7 +6,7 @@ import trax.supervised.trainer_lib
 
 # Parameters that will vary between experiments:
 # ==============================================================================
-train.model = @trax.models.Reformer
+train.model = @trax.models.ReformerLM
 # Parameters for multifactor:
 # ==============================================================================
 multifactor.constant = 0.088
@@ -23,22 +23,14 @@ Adam.b2 = 0.98
 Adam.eps = 1e-09
 Adam.weight_decay_rate = 1e-05
 
-# Parameters for SelfAttention:
-# ==============================================================================
-trax.layers.SelfAttention.attention_dropout = 0.1
-trax.layers.SelfAttention.chunk_len = 64
-trax.layers.SelfAttention.n_chunks_before = 1
-trax.layers.SelfAttention.n_parallel_heads = 1
-
 # Parameters for ReformerLM:
 # ==============================================================================
-Reformer.d_model = 512
-Reformer.d_ff = 2048
-Reformer.dropout = 0.1
-Reformer.ff_activation = @trax.layers.Relu
-Reformer.max_len = 512
-Reformer.mode = 'train'
-Reformer.n_decoder_layers = 6
-Reformer.n_encoder_layers = 6
-Reformer.n_heads = 8
-Reformer.input_vocab_size = 30
+ReformerLM.d_model = 512
+ReformerLM.d_ff = 2048
+ReformerLM.dropout = 0.1
+ReformerLM.ff_activation = @trax.layers.Relu
+ReformerLM.max_len = 512
+ReformerLM.mode = 'train'
+ReformerLM.n_layers = 6
+ReformerLM.n_heads = 4
+ReformerLM.input_vocab_size = 32
