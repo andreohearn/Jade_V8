@@ -14,7 +14,7 @@ multifactor.decay_factor = 0.5
 multifactor.factors = 'constant * linear_warmup * rsqrt_decay'
 multifactor.steps_per_cycle = 100000
 multifactor.steps_per_decay = 20000
-multifactor.warmup_steps = 8000
+multifactor.warmup_steps = 8
 
 # Parameters for Adam:
 # ==============================================================================
