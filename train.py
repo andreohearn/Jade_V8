@@ -132,7 +132,7 @@ trainer = trax.supervised.Trainer(
     model=trax.models.ReformerLM,
     loss_fn=trax.layers.CrossEntropyLoss(),
     optimizer=trax.optimizers.Adam,
-    #lr_schedule=trax.lr.multifactor(),
+    lr_schedule=trax.lr.multifactor(),
     inputs=trax.data.inputs.Inputs(gen_inputs),
     output_dir=output_dir)
 print("DONE, BEGIN TRAINING")
